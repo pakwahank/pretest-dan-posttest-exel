@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pre-Test & Post-Test — Fungsi Statistik Excel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   THEME: EMERALD GREEN — CLEAN MINIMALIST TECH
+   ============================================================ */
+:root{
+  --em-50:#ecfdf5;
+  --em-100:#d1fae5;
+  --em-200:#a7f3d0;
+  --em-300:#6ee7b7;
+  --em-400:#34d399;
+  --em-500:#10b981;
+  --em-600:#059669;
+  --em-700:#047857;
+  --em-800:#065f46;
+  --em-900:#064e3b;
+
+  --ink:#0b1f18;
+  --body:#334155;
+  --muted:#7c8b86;
+  --line:#e2efe9;
+  --card:#ffffff;
+}
+
+/* ---------- TOP NAVBAR ---------- */
+.topnav{
+  display:flex;align-items:center;justify-content:space-between;gap:14px;
+  background:#fff;border:1px solid var(--line);border-radius:16px;
+  padding:12px 18px;margin-bottom:18px;
+  box-shadow:0 10px 24px -22px rgba(6,78,59,.4);
+  flex-wrap:wrap;
+}
+.nav-brand{
+  font-size:13.5px;font-weight:800;color:var(--em-800);
+  letter-spacing:-.2px;
+}
+.nav-links{display:flex;gap:6px;background:#f4f7f6;padding:4px;border-radius:11px}
+.nav-link{
+  padding:8px 15px;border-radius:8px;text-decoration:none;
+  font-size:13px;font-weight:700;color:var(--muted);
+  transition:.18s;white-space:nowrap;
+}
+.nav-link:hover{color:var(--em-700);background:#fff}
+.nav-link.active{
+  background:#fff;color:var(--em-700);
+  box-shadow:0 2px 6px rgba(6,78,59,.08);
+}
+@media(max-width:640px){
+  .topnav{padding:10px 14px;justify-content:center}
+  .nav-brand{display:none}
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+
+html{scroll-behavior:smooth}
+
+body{
+  font-family:'Inter',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+  color:var(--body);
+  min-height:100vh;
+  padding:28px 16px 56px;
+  -webkit-font-smoothing:antialiased;
+  background:
+    radial-gradient(900px 520px at 8% -12%, #d1fae5 0%, transparent 58%),
+    radial-gradient(820px 520px at 112% 6%, #ccfbf1 0%, transparent 55%),
+    #f5faf8;
+}
+
+.wrap{max-width:820px;margin:0 auto}
+
+/* ---------- BRAND ---------- */
+.brand{display:flex;align-items:center;gap:14px;margin-bottom:22px}
+.logo{
+  width:50px;height:50px;flex:0 0 50px;border-radius:15px;
+  background:linear-gradient(145deg,var(--em-400),var(--em-700));
+  color:#fff;display:grid;place-items:center;
+  font-weight:800;font-style:italic;font-size:18px;letter-spacing:.5px;
+  box-shadow:0 10px 22px -8px rgba(5,150,105,.55);
+}
+.brand h1{font-size:19px;font-weight:800;color:var(--ink);letter-spacing:-.3px;line-height:1.25}
+.brand p{font-size:12.5px;color:var(--muted);margin-top:3px;line-height:1.4}
+
+/* ---------- CARD / SCREEN ---------- */
+.card{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:22px;
+  padding:28px;
+  box-shadow:0 18px 40px -26px rgba(6,78,59,.35), 0 2px 6px rgba(6,78,59,.04);
+}
+.screen{display:none}
+.screen.is-active{display:block;animation:fadeUp .35s cubic-bezier(.22,1,.36,1)}
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(10px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+.card-head h2{font-size:22px;font-weight:800;color:var(--ink);letter-spacing:-.4px;margin-top:12px}
+.card-head .sub{font-size:13.5px;color:var(--muted);margin-top:6px;line-height:1.55}
+
+/* ---------- PILL ---------- */
+.pill{
+  display:inline-flex;align-items:center;gap:6px;
+  background:var(--em-50);color:var(--em-700);
+  border:1px solid var(--em-100);
+  font-size:11.5px;font-weight:700;letter-spacing:.7px;text-transform:uppercase;
+  padding:5px 11px;border-radius:999px;white-space:nowrap;
+}
+.pill.ghost{
+  background:#f8fafc;color:var(--muted);border-color:#e9eff2;
+  text-transform:none;letter-spacing:0;font-weight:600;font-size:11.5px;
+}
+
+/* ---------- FORM ---------- */
+form{margin-top:22px}
+.field{display:block;margin-bottom:16px}
+.field > span{display:block;font-size:13px;font-weight:700;color:var(--ink);margin-bottom:7px}
+.field input[type=text]{
+  width:100%;padding:13px 15px;border-radius:12px;
+  border:1.5px solid var(--line);background:#fbfdfc;
+  font-size:14.5px;font-family:inherit;color:var(--ink);outline:none;
+  transition:.18s;
+}
+.field input[type=text]::placeholder{color:#a9b8b3}
+.field input[type=text]:focus{
+  border-color:var(--em-400);background:#fff;
+  box-shadow:0 0 0 4px rgba(16,185,129,.13);
+}
+
+.mode-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.mode{position:relative;display:block}
+.mode input{position:absolute;opacity:0;pointer-events:none}
+.mode-box{
+  display:block;padding:14px 16px;border:1.5px solid var(--line);
+  border-radius:14px;background:#fbfdfc;cursor:pointer;transition:.18s;
+}
+.mode-box strong{display:block;font-size:14.5px;font-weight:700;color:var(--ink)}
+.mode-box em{display:block;font-style:normal;font-size:12px;color:var(--muted);margin-top:4px}
+.mode:hover .mode-box{border-color:var(--em-200);background:var(--em-50)}
+.mode input:checked + .mode-box{
+  border-color:var(--em-500);background:var(--em-50);
+  box-shadow:0 0 0 4px rgba(16,185,129,.13);
+}
+
+.err{font-size:13px;color:#dc2626;font-weight:600;min-height:18px;margin:4px 0 12px}
+
+/* ---------- BUTTONS ---------- */
+.btn{
+  font-family:inherit;font-size:14.5px;font-weight:700;
+  border-radius:12px;padding:13px 20px;border:1.5px solid transparent;
+  cursor:pointer;transition:.18s;
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+}
+.btn-primary{
+  background:linear-gradient(135deg,var(--em-500),var(--em-600));
+  color:#fff;box-shadow:0 12px 24px -12px rgba(5,150,105,.9);
+}
+.btn-primary:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 16px 28px -12px rgba(5,150,105,.95)}
+.btn-primary:active:not(:disabled){transform:translateY(0)}
+.btn-ghost{background:#fff;border-color:var(--line);color:var(--em-700)}
+.btn-ghost:hover:not(:disabled){background:var(--em-50);border-color:var(--em-200)}
+.btn:disabled{opacity:.4;cursor:not-allowed;transform:none;box-shadow:none}
+.btn-block{width:100%}
+
+/* ---------- QUIZ HEADER ---------- */
+.quiz-head .quiz-meta{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.progress{display:flex;align-items:center;gap:12px;margin-top:18px}
+.progress-bar{
+  flex:1;height:8px;border-radius:999px;background:var(--em-50);
+  border:1px solid var(--em-100);overflow:hidden;
+}
+.progress-bar i{
+  display:block;height:100%;width:0;border-radius:999px;
+  background:linear-gradient(90deg,var(--em-400),var(--em-600));
+  transition:width .38s cubic-bezier(.4,0,.2,1);
+}
+.progress-txt{font-size:12.5px;font-weight:700;color:var(--em-700);min-width:46px;text-align:right}
+
+/* ---------- QUESTION ---------- */
+.q-body{margin-top:24px}
+.q-top{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.q-num{font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--em-600)}
+.q-type{
+  font-size:11.5px;font-weight:700;color:var(--muted);
+  background:#f4f7f6;border:1px solid #e9eff2;padding:4px 11px;border-radius:999px;
+}
+.q-text{font-size:17px;line-height:1.58;font-weight:700;color:var(--ink);margin-top:14px;letter-spacing:-.2px}
+
+/* options */
+.options{display:grid;gap:10px;margin-top:20px}
+.option{
+  display:flex;align-items:center;gap:13px;width:100%;text-align:left;
+  padding:14px 16px;border:1.5px solid var(--line);border-radius:14px;
+  background:#fff;cursor:pointer;font-family:inherit;
+  font-size:14.5px;font-weight:500;color:var(--ink);transition:.16s;
+}
+.option:hover{border-color:var(--em-300);background:var(--em-50)}
+.opt-key{
+  width:29px;height:29px;flex:0 0 29px;border-radius:9px;
+  display:grid;place-items:center;
+  background:var(--em-50);color:var(--em-700);
+  border:1px solid var(--em-100);
+  font-weight:800;font-size:13px;transition:.16s;
+}
+.option.selected{
+  border-color:var(--em-500);background:var(--em-50);
+  box-shadow:0 0 0 4px rgba(16,185,129,.13);
+}
+.option.selected .opt-key{background:var(--em-500);color:#fff;border-color:var(--em-500)}
+
+/* text answer */
+.text-answer{margin-top:20px}
+.input-wrap{position:relative;display:flex;align-items:center}
+.input-wrap .fx{
+  position:absolute;left:15px;font-style:italic;font-weight:800;
+  color:var(--em-600);font-size:14px;pointer-events:none;
+}
+.input-wrap input{
+  width:100%;padding:15px 16px 15px 48px;border-radius:13px;
+  border:1.5px solid var(--line);background:#fbfdfc;
+  font-family:'JetBrains Mono',ui-monospace,Menlo,Consolas,monospace;
+  font-size:15px;font-weight:500;letter-spacing:.3px;color:var(--ink);
+  outline:none;transition:.18s;
+}
+.input-wrap input::placeholder{color:#a9b8b3;font-weight:500}
+.input-wrap input:focus{
+  border-color:var(--em-400);background:#fff;
+  box-shadow:0 0 0 4px rgba(16,185,129,.13);
+}
+.hint{font-size:12.5px;color:var(--muted);margin-top:11px;line-height:1.5}
+.hint code{
+  background:var(--em-50);color:var(--em-700);border:1px solid var(--em-100);
+  padding:2px 7px;border-radius:6px;
+  font-family:'JetBrains Mono',monospace;font-size:12px;
+}
+
+/* nav */
+.quiz-nav{
+  display:flex;justify-content:space-between;gap:12px;
+  margin-top:28px;padding-top:20px;border-top:1px solid var(--line);
+}
+
+/* ---------- RESULT ---------- */
+.result-top{display:flex;gap:28px;align-items:center;flex-wrap:wrap}
+.score-ring{
+  --p:0;
+  width:150px;height:150px;flex:0 0 150px;border-radius:50%;
+  background:conic-gradient(var(--em-500) calc(var(--p) * 1%), #e8f5ef 0);
+  display:grid;place-items:center;
+  transition:background .5s ease;
+  box-shadow:0 14px 30px -18px rgba(5,150,105,.9);
+}
+.score-inner{
+  width:120px;height:120px;border-radius:50%;background:#fff;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  box-shadow:inset 0 0 0 1px var(--line);
+}
+.score-inner span{font-size:40px;font-weight:800;color:var(--em-700);line-height:1;letter-spacing:-1.5px}
+.score-inner small{font-size:10px;font-weight:800;letter-spacing:1.6px;color:var(--muted);margin-top:6px}
+
+.result-info{flex:1;min-width:240px}
+.result-info h2{font-size:22px;font-weight:800;color:var(--ink);letter-spacing:-.4px;margin-top:12px}
+.result-info .sub{font-size:13.5px;color:var(--muted);margin-top:6px;line-height:1.55}
+
+.stat-row{display:flex;gap:10px;margin-top:18px;flex-wrap:wrap}
+.stat{
+  background:#f7faf9;border:1px solid var(--line);border-radius:13px;
+  padding:10px 16px;text-align:center;min-width:78px;
+}
+.stat b{display:block;font-size:19px;font-weight:800;color:var(--ink);line-height:1.2}
+.stat span{font-size:10.5px;font-weight:700;letter-spacing:.5px;color:var(--muted);text-transform:uppercase}
+.stat.ok b{color:var(--em-600)}
+.stat.no b{color:#e11d48}
+
+.sync{
+  font-size:12.5px;margin-top:16px;color:var(--muted);
+  display:flex;align-items:center;gap:7px;font-weight:600;line-height:1.4;
+}
+.sync.ok{color:var(--em-700)}
+.sync.err{color:#dc2626}
+
+/* review */
+.review{margin-top:28px;border-top:1px solid var(--line);padding-top:22px}
+.review h4{font-size:14px;font-weight:800;color:var(--ink);margin-bottom:14px;letter-spacing:.2px}
+.rev-item{
+  border:1px solid var(--line);border-radius:14px;
+  padding:15px 17px;margin-bottom:10px;background:#fbfdfc;
+}
+.rev-item.correct{border-left:4px solid var(--em-500)}
+.rev-item.wrong{border-left:4px solid #f43f5e}
+.rev-q{font-size:13.5px;font-weight:700;color:var(--ink);line-height:1.55}
+.rev-a{font-size:12.5px;color:var(--muted);margin-top:9px;display:grid;gap:4px;line-height:1.5}
+.rev-a b{color:var(--ink);font-weight:700}
+.rev-a .good{color:var(--em-700);font-weight:700}
+.rev-a .bad{color:#e11d48;font-weight:700}
+
+.result-actions{display:flex;gap:12px;margin-top:26px;flex-wrap:wrap}
+
+/* footer */
+.foot{text-align:center;font-size:12px;color:var(--muted);margin-top:26px;line-height:1.6}
+
+/* ---------- RESPONSIVE ---------- */
+@media (max-width:640px){
+  body{padding:20px 13px 44px}
+  .card{padding:22px 18px;border-radius:18px}
+  .brand h1{font-size:16.5px}
+  .brand p{font-size:11.5px}
+  .mode-grid{grid-template-columns:1fr}
+  .q-text{font-size:15.5px}
+  .result-top{gap:20px;justify-content:center;text-align:center}
+  .result-info{min-width:100%;text-align:center}
+  .stat-row{justify-content:center}
+  .sync{justify-content:center}
+  .quiz-nav .btn{flex:1;padding:13px 12px;font-size:13.5px}
+  .score-ring{width:132px;height:132px;flex:0 0 132px}
+  .score-inner{width:106px;height:106px}
+  .score-inner span{font-size:34px}
+}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+	<nav class="topnav">
+    <span class="nav-brand">📘 Fungsi Excel</span>
+    <div class="nav-links">
+      <a href="index.html" class="nav-link active">📝 Tes Siswa</a>
+      <a href="rekap.html" class="nav-link">📊 Rekap Nilai</a>
+    </div>
+  </nav>
+
+  <!-- ================= BRAND ================= -->
+  <header class="brand">
+    <div class="logo">fx</div>
+    <div>
+      <h1>Fungsi Statistik Excel</h1>
+      <p>Pre-Test &amp; Post-Test Interaktif · SUM · AVERAGE · MAX · MIN · COUNT</p>
+    </div>
+  </header>
+
+  <!-- ================= SCREEN 1: START ================= -->
+  <section id="screen-start" class="screen is-active">
+    <div class="card">
+      <div class="card-head">
+        <span class="pill">Formulir Peserta</span>
+        <h2>Mulai Tes</h2>
+        <p class="sub">Isi identitas dan pilih jenis tes sebelum memulai. Terdapat 10 soal dengan nilai maksimal 100.</p>
+      </div>
+
+      <form id="form-start" novalidate>
+        <label class="field">
+          <span>Nama Lengkap</span>
+          <input id="in-nama" type="text" placeholder="Contoh: maryam " autocomplete="off" required>
+        </label>
+
+        <label class="field">
+          <span>Kelas</span>
+          <input id="in-kelas" type="text" placeholder="Contoh: XE4" autocomplete="off" required>
+        </label>
+
+        <div class="field">
+          <span>Jenis Tes</span>
+          <div class="mode-grid">
+            <label class="mode">
+              <input type="radio" name="mode" value="Pre-Test" checked>
+              <span class="mode-box">
+                <strong>Pre-Test</strong>
+                <em>Tes awal sebelum materi</em>
+              </span>
+            </label>
+            <label class="mode">
+              <input type="radio" name="mode" value="Post-Test">
+              <span class="mode-box">
+                <strong>Post-Test</strong>
+                <em>Tes akhir setelah materi</em>
+              </span>
+            </label>
+          </div>
+        </div>
+
+        <p class="err" id="err-start"></p>
+
+        <button class="btn btn-primary btn-block" type="submit">
+          Mulai Tes <span aria-hidden="true">→</span>
+        </button>
+      </form>
+    </div>
+  </section>
+
+  <!-- ================= SCREEN 2: QUIZ ================= -->
+  <section id="screen-quiz" class="screen">
+    <div class="card">
+      <div class="quiz-head">
+        <div class="quiz-meta">
+          <span class="pill" id="quiz-mode">Pre-Test</span>
+          <span class="pill ghost" id="quiz-name">Peserta</span>
+        </div>
+        <div class="progress">
+          <div class="progress-bar"><i id="progress-fill"></i></div>
+          <span class="progress-txt" id="progress-txt">1/10</span>
+        </div>
+      </div>
+
+      <div class="q-body">
+        <div class="q-top">
+          <span class="q-num" id="q-num">Soal 1</span>
+          <span class="q-type" id="q-type">Pilihan Ganda</span>
+        </div>
+        <h3 class="q-text" id="q-text"></h3>
+        <div id="answer-area"></div>
+      </div>
+
+      <div class="quiz-nav">
+        <button class="btn btn-ghost" id="btn-prev" type="button">← Sebelumnya</button>
+        <button class="btn btn-primary" id="btn-next" type="button">Berikutnya →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= SCREEN 3: RESULT ================= -->
+  <section id="screen-result" class="screen">
+    <div class="card">
+      <div class="result-top">
+        <div class="score-ring" id="score-ring">
+          <div class="score-inner">
+            <span id="score-val">0</span>
+            <small>NILAI</small>
+          </div>
+        </div>
+
+        <div class="result-info">
+          <span class="pill" id="res-mode">Pre-Test</span>
+          <h2 id="res-title">Tes Selesai</h2>
+          <p class="sub" id="res-sub">—</p>
+
+          <div class="stat-row">
+            <div class="stat ok"><b id="stat-benar">0</b><span>Benar</span></div>
+            <div class="stat no"><b id="stat-salah">0</b><span>Salah</span></div>
+            <div class="stat"><b id="stat-total">10</b><span>Soal</span></div>
+          </div>
+
+          <p class="sync" id="sync-status"></p>
+        </div>
+      </div>
+
+      <div class="review">
+        <h4>Pembahasan Jawaban</h4>
+        <div id="review-list"></div>
+      </div>
+
+      <div class="result-actions">
+        <button class="btn btn-primary" id="btn-retry" type="button">Ulangi Tes</button>
+        <button class="btn btn-ghost" id="btn-home" type="button">Kembali ke Awal</button>
+      </div>
+    </div>
+  </section>
+
+  <p class="foot">Fungsi Statistik Excel · Media Pembelajaran Interaktif</p>
+</div>
+
+<script>
+/* ============================================================
+   1. KONFIGURASI — GANTI DENGAN URL WEB APP GOOGLE APPS SCRIPT
+   ============================================================ */
+const GAS_URL = "https://script.google.com/macros/s/AKfycbycct73mBAWoUR6dBRgNr32kZc86aya9N-djkiKsOaEcJ_urW220A8JxjymUO1saSQo/exec";
+
+
+/* ============================================================
+   2. BANK SOAL (10 SOAL)
+   ============================================================ */
+const QUESTIONS = [
+  {
+    type: 'mc',
+    q: 'Fungsi yang digunakan untuk menjumlahkan seluruh data angka dalam satu rentang sel adalah ...',
+    options: ['SUM', 'AVERAGE', 'COUNT', 'MAX'],
+    answer: 0,
+    explain: 'SUM berfungsi menjumlahkan nilai angka. Contoh: =SUM(A1:A10)'
+  },
+  {
+    type: 'mc',
+    q: 'Fungsi yang digunakan untuk mencari nilai rata-rata dari sekumpulan data adalah ...',
+    options: ['MIN', 'AVERAGE', 'SUM', 'COUNT'],
+    answer: 1,
+    explain: 'AVERAGE menghitung nilai rata-rata. Contoh: =AVERAGE(B2:B6)'
+  },
+  {
+    type: 'mc',
+    q: 'Fungsi yang menampilkan nilai tertinggi dari suatu rentang data adalah ...',
+    options: ['MAX', 'MIN', 'COUNT', 'SUM'],
+    answer: 0,
+    explain: 'MAX mengembalikan nilai terbesar. Contoh: =MAX(C1:C10)'
+  },
+  {
+    type: 'mc',
+    q: 'Fungsi yang menampilkan nilai terendah dari suatu rentang data adalah ...',
+    options: ['MAX', 'AVERAGE', 'MIN', 'COUNT'],
+    answer: 2,
+    explain: 'MIN mengembalikan nilai terkecil. Contoh: =MIN(D1:D5)'
+  },
+  {
+    type: 'mc',
+    q: 'Fungsi yang digunakan untuk menghitung banyaknya sel yang berisi data angka adalah ...',
+    options: ['SUM', 'COUNT', 'COUNTA', 'AVERAGE'],
+    answer: 1,
+    explain: 'COUNT menghitung jumlah sel berisi angka. COUNTA menghitung sel berisi teks maupun angka.'
+  },
+  {
+    type: 'text',
+    q: 'Tuliskan rumus Excel untuk menjumlahkan data pada sel A1 sampai A10.',
+    accept: ['SUM(A1:A10)'],
+    placeholder: '=SUM(...)',
+    explain: 'Rumus yang benar: =SUM(A1:A10)'
+  },
+  {
+    type: 'text',
+    q: 'Tuliskan rumus Excel untuk menghitung rata-rata data pada sel B2 sampai B6.',
+    accept: ['AVERAGE(B2:B6)'],
+    placeholder: '=AVERAGE(...)',
+    explain: 'Rumus yang benar: =AVERAGE(B2:B6)'
+  },
+  {
+    type: 'text',
+    q: 'Tuliskan rumus Excel untuk mencari nilai tertinggi dari data pada sel C1 sampai C10.',
+    accept: ['MAX(C1:C10)'],
+    placeholder: '=MAX(...)',
+    explain: 'Rumus yang benar: =MAX(C1:C10)'
+  },
+  {
+    type: 'text',
+    q: 'Tuliskan rumus Excel untuk mencari nilai terendah dari data pada sel D1 sampai D5.',
+    accept: ['MIN(D1:D5)'],
+    placeholder: '=MIN(...)',
+    explain: 'Rumus yang benar: =MIN(D1:D5)'
+  },
+  {
+    type: 'mc',
+    q: 'Perhatikan data nilai berikut: 70, 85, 90, 60, 100. Jika data tersebut berada di sel A1:A5, hasil dari =AVERAGE(A1:A5) adalah ...',
+    options: ['75', '81', '85', '90'],
+    answer: 1,
+    explain: '(70 + 85 + 90 + 60 + 100) : 5 = 405 : 5 = 81'
+  }
+];
+
+/* ============================================================
+   3. STATE APLIKASI
+   ============================================================ */
+const state = {
+  nama: '',
+  kelas: '',
+  mode: 'Pre-Test',
+  answers: new Array(QUESTIONS.length).fill(null),
+  current: 0,
+  score: 0,
+  benar: 0
+};
+
+/* ============================================================
+   4. UTILITAS
+   ============================================================ */
+const $ = (id) => document.getElementById(id);
+
+const escapeHtml = (s) => String(s).replace(/[&<>"']/g, c => ({
+  '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+}[c]));
+
+/* Normalisasi jawaban isian rumus */
+function norm(str){
+  return String(str || '')
+    .toUpperCase()
+    .replace(/\s+/g, '')          // hapus semua spasi
+    .replace(/^=/, '')            // hapus tanda = di awal
+    .replace(/;/g, ',')           // pemisah ; menjadi ,
+    .replace(/：/g, ':')          // titik dua full-width
+    .replace(/（/g, '(')
+    .replace(/）/g, ')')
+    .replace(/[.]/g, '');         // toleransi titik pemisah ribuan
+}
+
+function isCorrect(i){
+  const q = QUESTIONS[i];
+  const a = state.answers[i];
+
+  if (q.type === 'mc') return a === q.answer;
+
+  if (a === null || a === undefined || String(a).trim() === '') return false;
+  const userNorm = norm(a);
+  return q.accept.some(ans => norm(ans) === userNorm);
+}
+
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s => {
+    s.classList.toggle('is-active', s.id === id);
+  });
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+/* ============================================================
+   5. START SCREEN
+   ============================================================ */
+$('form-start').addEventListener('submit', (e) => {
+  e.preventDefault();
+
+  const nama = $('in-nama').value.trim();
+  const kelas = $('in-kelas').value.trim();
+  const err = $('err-start');
+
+  if (!nama){ err.textContent = '⚠ Nama lengkap wajib diisi.'; $('in-nama').focus(); return; }
+  if (!kelas){ err.textContent = '⚠ Kelas wajib diisi.'; $('in-kelas').focus(); return; }
+
+  err.textContent = '';
+  state.nama  = nama;
+  state.kelas = kelas;
+  state.mode  = document.querySelector('input[name="mode"]:checked').value;
+
+  resetQuiz();
+
+  $('quiz-mode').textContent = state.mode;
+  $('quiz-name').textContent = `${state.nama} · ${state.kelas}`;
+
+  showScreen('screen-quiz');
+  renderQuestion();
+});
+
+/* ============================================================
+   6. QUIZ ENGINE
+   ============================================================ */
+function resetQuiz(){
+  state.answers = new Array(QUESTIONS.length).fill(null);
+  state.current = 0;
+  state.score = 0;
+  state.benar = 0;
+}
+
+function renderQuestion(){
+  const i = state.current;
+  const q = QUESTIONS[i];
+
+  $('q-num').textContent  = `Soal ${i + 1}`;
+  $('q-type').textContent = q.type === 'mc' ? 'Pilihan Ganda' : 'Isian Rumus';
+  $('q-text').textContent = q.q;
+
+  const area = $('answer-area');
+  area.innerHTML = '';
+
+  /* ---------- PILIHAN GANDA ---------- */
+  if (q.type === 'mc'){
+    const list = document.createElement('div');
+    list.className = 'options';
+
+    q.options.forEach((opt, idx) => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'option' + (state.answers[i] === idx ? ' selected' : '');
+      btn.innerHTML = `<span class="opt-key">${String.fromCharCode(65 + idx)}</span>
+                       <span class="opt-txt">${escapeHtml(opt)}</span>`;
+
+      btn.addEventListener('click', () => {
+        state.answers[i] = idx;
+        [...list.children].forEach(c => c.classList.remove('selected'));
+        btn.classList.add('selected');
+      });
+
+      list.appendChild(btn);
+    });
+
+    area.appendChild(list);
+  }
+
+  /* ---------- ISIAN RUMUS ---------- */
+  else {
+    const wrap = document.createElement('div');
+    wrap.className = 'text-answer';
+
+    const inputWrap = document.createElement('div');
+    inputWrap.className = 'input-wrap';
+
+    const fx = document.createElement('span');
+    fx.className = 'fx';
+    fx.textContent = 'fx';
+
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.id = 'text-input';
+    input.spellcheck = false;
+    input.autocomplete = 'off';
+    input.placeholder = q.placeholder || 'Tulis rumus Excel...';
+    if (state.answers[i] !== null && state.answers[i] !== undefined) {
+      input.value = state.answers[i];
+    }
+
+    input.addEventListener('input', () => { state.answers[i] = input.value; });
+    input.addEventListener('keydown', (ev) => {
+      if (ev.key === 'Enter'){ ev.preventDefault(); goNext(); }
+    });
+
+    inputWrap.appendChild(fx);
+    inputWrap.appendChild(input);
+
+    const hint = document.createElement('p');
+    hint.className = 'hint';
+    // hint.innerHTML = 'Gunakan format rumus Excel, contoh: <code>=SUM(A1:A10)</code> — huruf besar/kecil dan spasi diabaikan.';
+
+    wrap.appendChild(inputWrap);
+    wrap.appendChild(hint);
+    area.appendChild(wrap);
+
+    setTimeout(() => input.focus(), 60);
+  }
+
+  updateProgress();
+  updateNav();
+}
+
+function updateProgress(){
+  const total = QUESTIONS.length;
+  const pct = ((state.current + 1) / total) * 100;
+  $('progress-fill').style.width = pct + '%';
+  $('progress-txt').textContent = `${state.current + 1}/${total}`;
+}
+
+function updateNav(){
+  $('btn-prev').disabled = state.current === 0;
+  const isLast = state.current === QUESTIONS.length - 1;
+  $('btn-next').textContent = isLast ? 'Selesai & Lihat Nilai ✓' : 'Berikutnya →';
+}
+
+function goNext(){
+  if (state.current < QUESTIONS.length - 1){
+    state.current++;
+    renderQuestion();
+  } else {
+    finishQuiz();
+  }
+}
+
+$('btn-next').addEventListener('click', goNext);
+
+$('btn-prev').addEventListener('click', () => {
+  if (state.current > 0){
+    state.current--;
+    renderQuestion();
+  }
+});
+
+/* ============================================================
+   7. PENILAIAN & HASIL (INSTANT SCORE)
+   ============================================================ */
+function finishQuiz(){
+  const unanswered = state.answers.filter((a, i) => {
+    const q = QUESTIONS[i];
+    if (q.type === 'mc') return a === null || a === undefined;
+    return a === null || a === undefined || String(a).trim() === '';
+  }).length;
+
+  if (unanswered > 0){
+    const lanjut = confirm(`Masih ada ${unanswered} soal yang belum dijawab.\nTetap selesaikan tes dan lihat nilai?`);
+    if (!lanjut) return;
+  }
+
+  /* Hitung skor */
+  let benar = 0;
+  QUESTIONS.forEach((_, i) => { if (isCorrect(i)) benar++; });
+
+  const total = QUESTIONS.length;
+  state.benar = benar;
+  state.score = Math.round((benar / total) * 100);
+
+  /* Tampilkan layar hasil */
+  $('res-mode').textContent  = state.mode;
+  $('res-title').textContent = state.score >= 75 ? 'Kerja Bagus! 🎉' : 'Tetap Semangat! 💪';
+  $('res-sub').textContent   = `${state.nama} · ${state.kelas} — ${state.mode}`;
+  $('stat-benar').textContent = benar;
+  $('stat-salah').textContent = total - benar;
+  $('stat-total').textContent = total;
+
+  renderReview();
+  showScreen('screen-result');
+  animateScore(state.score);
+
+  /* Kirim ke Google Sheets */
+  kirimKeSpreadsheet();
+}
+
+function animateScore(target){
+  const el = $('score-val');
+  const ring = $('score-ring');
+  let cur = 0;
+  const step = Math.max(1, Math.round(target / 30));
+
+  ring.style.setProperty('--p', 0);
+  el.textContent = '0';
+
+  const timer = setInterval(() => {
+    cur += step;
+    if (cur >= target){ cur = target; clearInterval(timer); }
+    el.textContent = cur;
+    ring.style.setProperty('--p', cur);
+  }, 25);
+}
+
+function renderReview(){
+  const list = $('review-list');
+  list.innerHTML = '';
+
+  QUESTIONS.forEach((q, i) => {
+    const ok = isCorrect(i);
+    const a = state.answers[i];
+
+    let userAns, correctAns;
+
+    if (q.type === 'mc'){
+      userAns = (a === null || a === undefined) ? 'Tidak dijawab' : q.options[a];
+      correctAns = q.options[q.answer];
+    } else {
+      userAns = (a !== null && a !== undefined && String(a).trim() !== '') ? String(a) : 'Tidak dijawab';
+      correctAns = '=' + q.accept[0];
+    }
+
+    const item = document.createElement('div');
+    item.className = 'rev-item ' + (ok ? 'correct' : 'wrong');
+    item.innerHTML = `
+      <div class="rev-q">${i + 1}. ${escapeHtml(q.q)}</div>
+      <div class="rev-a">
+        <div>Jawaban kamu: <span class="${ok ? 'good' : 'bad'}">${escapeHtml(userAns)}</span></div>
+        <div>Jawaban benar: <b>${escapeHtml(correctAns)}</b></div>
+        <div>💡 ${escapeHtml(q.explain)}</div>
+      </div>`;
+    list.appendChild(item);
+  });
+}
+
+/* ============================================================
+   8. KIRIM DATA KE GOOGLE APPS SCRIPT / GOOGLE SHEETS
+   ============================================================ */
+async function kirimKeSpreadsheet(){
+  const status = $('sync-status');
+
+  if (!GAS_URL || GAS_URL.includes('GANTI_DENGAN')){
+    status.className = 'sync err';
+    status.textContent = '⚠ URL Google Apps Script belum diatur pada variabel GAS_URL.';
+    return;
+  }
+
+  status.className = 'sync';
+  status.textContent = '⏳ Mengirim data ke Google Sheets...';
+
+  /* Rincian jawaban: "1. SUM [B] | 2. 81 [S] | ..." */
+  const detail = QUESTIONS.map((q, i) => {
+    const a = state.answers[i];
+    let userAns;
+    if (q.type === 'mc'){
+      userAns = (a === null || a === undefined) ? '-' : q.options[a];
+    } else {
+      userAns = (a !== null && a !== undefined && String(a).trim() !== '') ? String(a) : '-';
+    }
+    return `${i + 1}. ${userAns} [${isCorrect(i) ? 'B' : 'S'}]`;
+  }).join(' | ');
+
+  const payload = new URLSearchParams({
+    timestamp: new Date().toLocaleString('id-ID', { hour12: false }),
+    nama:      state.nama,
+    kelas:     state.kelas,
+    jenisTes:  state.mode,
+    skor:      String(state.score),
+    benar:     String(state.benar),
+    salah:     String(QUESTIONS.length - state.benar),
+    detail:    detail
+  });
+
+  try {
+    await fetch(GAS_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
+      body: payload.toString()
+    });
+
+    status.className = 'sync ok';
+    status.textContent = '✓ Data berhasil dikirim ke Google Sheets.';
+  } catch (err) {
+    console.error('Gagal mengirim data:', err);
+    status.className = 'sync err';
+    status.textContent = '⚠ Gagal mengirim data. Periksa koneksi internet atau URL Apps Script.';
+  }
+}
+
+/* ============================================================
+   9. TOMBOL HASIL
+   ============================================================ */
+$('btn-retry').addEventListener('click', () => {
+  resetQuiz();
+  $('quiz-mode').textContent = state.mode;
+  $('quiz-name').textContent = `${state.nama} · ${state.kelas}`;
+  $('sync-status').textContent = '';
+  showScreen('screen-quiz');
+  renderQuestion();
+});
+
+$('btn-home').addEventListener('click', () => {
+  resetQuiz();
+  $('in-nama').value = '';
+  $('in-kelas').value = '';
+  $('err-start').textContent = '';
+  $('sync-status').textContent = '';
+  document.querySelector('input[name="mode"][value="Pre-Test"]').checked = true;
+  showScreen('screen-start');
+});
+</script>
+
+</body>
+</html>

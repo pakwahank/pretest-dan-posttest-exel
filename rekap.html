@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rekap Nilai Siswa — Fungsi Excel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --em-50:#ecfdf5; --em-100:#d1fae5; --em-200:#a7f3d0;
+  --em-400:#34d399; --em-500:#10b981; --em-600:#059669;
+  --em-700:#047857; --ink:#0b1f18; --body:#334155;
+  --muted:#7c8b86; --line:#e2efe9; --card:#ffffff;
+}
+
+/* ---------- TOP NAVBAR ---------- */
+.topnav{
+  display:flex;align-items:center;justify-content:space-between;gap:14px;
+  background:#fff;border:1px solid var(--line);border-radius:16px;
+  padding:12px 18px;margin-bottom:18px;
+  box-shadow:0 10px 24px -22px rgba(6,78,59,.4);
+  flex-wrap:wrap;
+}
+.nav-brand{
+  font-size:13.5px;font-weight:800;color:var(--em-800);
+  letter-spacing:-.2px;
+}
+.nav-links{display:flex;gap:6px;background:#f4f7f6;padding:4px;border-radius:11px}
+.nav-link{
+  padding:8px 15px;border-radius:8px;text-decoration:none;
+  font-size:13px;font-weight:700;color:var(--muted);
+  transition:.18s;white-space:nowrap;
+}
+.nav-link:hover{color:var(--em-700);background:#fff}
+.nav-link.active{
+  background:#fff;color:var(--em-700);
+  box-shadow:0 2px 6px rgba(6,78,59,.08);
+}
+@media(max-width:640px){
+  .topnav{padding:10px 14px;justify-content:center}
+  .nav-brand{display:none}
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:'Inter',system-ui,-apple-system,sans-serif;
+  color:var(--body); min-height:100vh; padding:24px 16px 48px;
+  background:
+    radial-gradient(900px 520px at 8% -12%, #d1fae5 0%, transparent 58%),
+    radial-gradient(820px 520px at 112% 6%, #ccfbf1 0%, transparent 55%),
+    #f5faf8;
+}
+.wrap{max-width:1200px;margin:0 auto}
+
+/* HEADER */
+.head{display:flex;align-items:center;gap:14px;margin-bottom:22px;flex-wrap:wrap}
+.logo{
+  width:50px;height:50px;flex:0 0 50px;border-radius:15px;
+  background:linear-gradient(145deg,var(--em-400),var(--em-700));
+  color:#fff;display:grid;place-items:center;font-size:22px;
+  box-shadow:0 10px 22px -8px rgba(5,150,105,.55);
+}
+.head h1{font-size:19px;font-weight:800;color:var(--ink);letter-spacing:-.3px}
+.head p{font-size:12.5px;color:var(--muted);margin-top:3px}
+.head .spacer{flex:1}
+.head .btn-ghost{background:#fff;border:1.5px solid var(--line);color:var(--em-700);
+  padding:9px 15px;border-radius:11px;font-weight:700;font-size:13px;cursor:pointer;transition:.18s;font-family:inherit}
+.head .btn-ghost:hover{background:var(--em-50);border-color:var(--em-200)}
+
+/* LOGIN */
+.login-card{
+  max-width:420px;margin:60px auto;background:#fff;
+  border:1px solid var(--line);border-radius:22px;padding:32px;
+  box-shadow:0 18px 40px -26px rgba(6,78,59,.35);text-align:center;
+}
+.login-card .icon{
+  width:64px;height:64px;margin:0 auto 18px;border-radius:18px;
+  background:var(--em-50);display:grid;place-items:center;font-size:28px;
+}
+.login-card h2{font-size:20px;font-weight:800;color:var(--ink);margin-bottom:6px}
+.login-card p{font-size:13.5px;color:var(--muted);margin-bottom:20px;line-height:1.5}
+.login-card input{
+  width:100%;padding:13px 15px;border-radius:12px;
+  border:1.5px solid var(--line);background:#fbfdfc;
+  font-size:14.5px;font-family:inherit;color:var(--ink);
+  outline:none;transition:.18s;text-align:center;
+}
+.login-card input:focus{border-color:var(--em-400);background:#fff;box-shadow:0 0 0 4px rgba(16,185,129,.13)}
+.login-card .btn{margin-top:14px;width:100%}
+.err-login{font-size:12.5px;color:#dc2626;font-weight:600;margin-top:10px;min-height:18px}
+
+/* BUTTONS */
+.btn{
+  font-family:inherit;font-size:14px;font-weight:700;
+  border-radius:11px;padding:11px 18px;border:1.5px solid transparent;
+  cursor:pointer;transition:.18s;display:inline-flex;align-items:center;justify-content:center;gap:7px;
+}
+.btn-primary{
+  background:linear-gradient(135deg,var(--em-500),var(--em-600));
+  color:#fff;box-shadow:0 10px 20px -10px rgba(5,150,105,.9);
+}
+.btn-primary:hover:not(:disabled){transform:translateY(-1px)}
+.btn-ghost{background:#fff;border-color:var(--line);color:var(--em-700)}
+.btn-ghost:hover:not(:disabled){background:var(--em-50);border-color:var(--em-200)}
+.btn-sm{padding:8px 14px;font-size:13px}
+
+/* STATS */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:20px}
+.stat{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px 18px;
+  box-shadow:0 8px 20px -18px rgba(6,78,59,.4)}
+.stat .label{font-size:11px;font-weight:800;letter-spacing:.7px;text-transform:uppercase;color:var(--muted)}
+.stat .value{font-size:26px;font-weight:800;color:var(--ink);letter-spacing:-.8px;margin-top:6px;line-height:1.1}
+.stat .value.green{color:var(--em-600)}
+.stat .sub{font-size:11.5px;color:var(--muted);margin-top:4px;font-weight:600}
+
+/* CARD */
+.card{background:#fff;border:1px solid var(--line);border-radius:20px;padding:20px;
+  box-shadow:0 18px 40px -26px rgba(6,78,59,.35)}
+
+/* TOOLBAR */
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid var(--line)}
+.toolbar input[type=text], .toolbar select{
+  padding:10px 14px;border-radius:11px;border:1.5px solid var(--line);
+  background:#fbfdfc;font-size:13.5px;font-family:inherit;color:var(--ink);outline:none;transition:.18s;
+}
+.toolbar input[type=text]{flex:1;min-width:180px}
+.toolbar input:focus, .toolbar select:focus{border-color:var(--em-400);background:#fff;box-shadow:0 0 0 4px rgba(16,185,129,.13)}
+.toolbar .spacer{flex:1}
+
+/* TABS */
+.tabs{display:flex;gap:6px;margin-bottom:18px;background:#f4f7f6;padding:5px;border-radius:12px;width:fit-content}
+.tab{padding:9px 18px;border-radius:9px;border:none;background:transparent;
+  font-family:inherit;font-size:13.5px;font-weight:700;color:var(--muted);cursor:pointer;transition:.18s}
+.tab.active{background:#fff;color:var(--em-700);box-shadow:0 2px 6px rgba(6,78,59,.08)}
+
+/* TABLE */
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:12px;border:1px solid var(--line)}
+table{width:100%;border-collapse:collapse;font-size:13.5px;min-width:720px}
+thead{background:#f7faf9}
+th{text-align:left;padding:12px 14px;font-weight:800;color:var(--ink);
+  font-size:12px;letter-spacing:.3px;text-transform:uppercase;white-space:nowrap;
+  user-select:none;border-bottom:1px solid var(--line)}
+th.sortable{cursor:pointer}
+th.sortable:hover{background:var(--em-50)}
+th .arrow{opacity:.35;font-size:10px;margin-left:3px}
+th.sort-asc .arrow, th.sort-desc .arrow{opacity:1;color:var(--em-600)}
+td{padding:12px 14px;border-bottom:1px solid #f0f6f3;color:var(--body);vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:#fbfdfc}
+
+.badge{display:inline-block;padding:3px 10px;border-radius:8px;font-size:11.5px;font-weight:800;letter-spacing:.3px}
+.badge-pre{background:#e0f2fe;color:#0369a1}
+.badge-post{background:#ecfdf5;color:#047857}
+.badge-naik{background:#dcfce7;color:#15803d}
+.badge-turun{background:#fee2e2;color:#b91c1c}
+.badge-tetap{background:#f1f5f9;color:#475569}
+.badge-belum{background:#fef9c3;color:#854d0e}
+
+.score{font-weight:800;color:var(--ink);font-size:15px}
+.score.good{color:var(--em-600)}
+.score.bad{color:#dc2626}
+.delta{font-weight:800}
+.delta.up{color:#15803d}
+.delta.down{color:#b91c1c}
+.delta.same{color:#64748b}
+
+.empty{text-align:center;padding:50px 20px;color:var(--muted);font-size:14px}
+.empty .ico{font-size:40px;margin-bottom:12px;opacity:.4}
+
+.loading{text-align:center;padding:60px 20px;color:var(--muted);font-size:14px}
+.spinner{
+  width:36px;height:36px;border:3px solid var(--em-100);border-top-color:var(--em-500);
+  border-radius:50%;margin:0 auto 14px;animation:spin .8s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+@media(max-width:640px){
+  body{padding:18px 12px 40px}
+  .head h1{font-size:16.5px}
+  .card{padding:16px}
+  .toolbar{flex-direction:column}
+  .toolbar input, .toolbar select{width:100%}
+  .toolbar .spacer{display:none}
+  .stat .value{font-size:22px}
+}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+<!-- ============ NAVBAR ============ -->
+  <nav class="topnav">
+    <span class="nav-brand">📘 Statistik Excel</span>
+    <div class="nav-links">
+      <a href="index.html" class="nav-link">📝 Tes Siswa</a>
+      <a href="rekap.html" class="nav-link active">📊 Rekap Nilai</a>
+    </div>
+  </nav>
+
+  <header class="head">
+    <div class="logo">📊</div>
+    <div>
+      <h1>Rekap Nilai Siswa</h1>
+      <p>Pre-Test &amp; Post-Test · Statistik Excel</p>
+    </div>
+    <div class="spacer"></div>
+    <button class="btn-ghost" id="btn-logout" style="display:none">🚪 Keluar</button>
+  </header>
+
+  <!-- ============ LOGIN ============ -->
+  <div id="login-screen" class="login-card">
+    <div class="icon">🔒</div>
+    <h2>Akses Guru</h2>
+    <p>Masukkan kata sandi untuk melihat rekap nilai siswa.</p>
+    <input id="pwd" type="password" placeholder="Kata sandi" autocomplete="off">
+    <p class="err-login" id="err-login"></p>
+    <button class="btn btn-primary" id="btn-login">Masuk</button>
+  </div>
+
+  <!-- ============ MAIN ============ -->
+  <div id="main-screen" style="display:none">
+    <div class="stats" id="stats"></div>
+
+    <div class="card">
+      <div class="toolbar">
+        <input id="search" type="text" placeholder="🔍 Cari nama siswa...">
+        <select id="filter-kelas"><option value="">Semua Kelas</option></select>
+        <select id="filter-jenis">
+          <option value="">Semua Jenis</option>
+          <option value="Pre-Test">Pre-Test</option>
+          <option value="Post-Test">Post-Test</option>
+        </select>
+        <div class="spacer"></div>
+        <button class="btn btn-ghost btn-sm" id="btn-refresh">🔄 Refresh</button>
+        <button class="btn btn-ghost btn-sm" id="btn-csv">⬇ CSV</button>
+      </div>
+
+      <div class="tabs">
+        <button class="tab active" data-tab="rekap">Rekap Per Siswa</button>
+        <button class="tab" data-tab="raw">Semua Jawaban</button>
+      </div>
+
+      <div id="table-container">
+        <div class="loading"><div class="spinner"></div>Memuat data...</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   ⚙️ KONFIGURASI — WAJIB DIISI
+   ============================================================ */
+const GAS_URL  = "https://script.google.com/macros/s/AKfycbycct73mBAWoUR6dBRgNr32kZc86aya9N-djkiKsOaEcJ_urW220A8JxjymUO1saSQo/exec";
+const PASSWORD = "ppguny";   // ganti kata sandi sesuai keinginan
+
+/* ============================================================
+   STATE
+   ============================================================ */
+let DATA_RAW   = [];
+let DATA_REKAP = [];
+let currentTab = 'rekap';
+let sortKey    = 'nama';
+let sortDir    = 'asc';
+
+const $   = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const avg = arr => arr.length ? Math.round(arr.reduce((a,b)=>a+b,0) / arr.length) : 0;
+
+/* ============================================================
+   LOGIN
+   ============================================================ */
+$('btn-login').addEventListener('click', cekLogin);
+$('pwd').addEventListener('keydown', e => { if (e.key === 'Enter') cekLogin(); });
+
+function cekLogin(){
+  if ($('pwd').value === PASSWORD){
+    $('login-screen').style.display = 'none';
+    $('main-screen').style.display   = 'block';
+    $('btn-logout').style.display    = 'inline-flex';
+    loadData();
+  } else {
+    $('err-login').textContent = '⚠ Kata sandi salah.';
+    $('pwd').value = '';
+    $('pwd').focus();
+  }
+}
+
+$('btn-logout').addEventListener('click', () => {
+  $('login-screen').style.display = 'block';
+  $('main-screen').style.display   = 'none';
+  $('btn-logout').style.display    = 'none';
+  $('pwd').value = '';
+  $('err-login').textContent = '';
+});
+
+/* ============================================================
+   FETCH DATA VIA GAS (GET)
+   ============================================================ */
+async function loadData(){
+  $('table-container').innerHTML = '<div class="loading"><div class="spinner"></div>Memuat data dari Google Sheets...</div>';
+
+  if (!GAS_URL || GAS_URL.includes('GANTI_DENGAN')){
+    $('table-container').innerHTML = '<div class="empty"><div class="ico">⚠️</div>URL Google Apps Script belum diatur. Buka file rekap.html dan isi GAS_URL.</div>';
+    return;
+  }
+
+  try {
+    // Cache-busting supaya data selalu baru
+    const url = GAS_URL + '?action=getData&_=' + Date.now();
+    const res = await fetch(url, { method: 'GET' });
+
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+
+    const json = await res.json();
+
+    if (json.status !== 'ok') throw new Error('Response tidak valid');
+
+    DATA_RAW   = json.raw   || [];
+    DATA_REKAP = json.rekap || [];
+
+    isiFilterKelas();
+    renderStats();
+    renderTable();
+  } catch (err) {
+    console.error(err);
+    $('table-container').innerHTML =
+      '<div class="empty"><div class="ico">⚠️</div>Gagal memuat data: ' + esc(err.message) +
+      '<br><br><small style="color:#94a3b8">Pastikan:<br>1. GAS_URL sudah diisi dengan benar<br>2. Deployment akses = Anyone<br>3. Sudah deploy ulang dengan version baru</small></div>';
+  }
+}
+
+/* ============================================================
+   FILTER KELAS
+   ============================================================ */
+function isiFilterKelas(){
+  const set = {};
+  DATA_RAW.forEach(r => { if (r.kelas) set[r.kelas] = true; });
+  const sel = $('filter-kelas');
+  const cur = sel.value;
+  sel.innerHTML = '<option value="">Semua Kelas</option>';
+  Object.keys(set).sort().forEach(k => {
+    const o = document.createElement('option');
+    o.value = k; o.textContent = k;
+    sel.appendChild(o);
+  });
+  sel.value = cur;
+}
+
+/* ============================================================
+   STATISTIK
+   ============================================================ */
+function renderStats(){
+  const preScores  = DATA_REKAP.filter(r => r.pre  !== null).map(r => r.pre);
+  const postScores = DATA_REKAP.filter(r => r.post !== null).map(r => r.post);
+  const selisih    = DATA_REKAP.filter(r => r.selisih !== null).map(r => r.selisih);
+
+  const totalSiswa = DATA_REKAP.length;
+  const avgPre     = avg(preScores);
+  const avgPost    = avg(postScores);
+  const avgDelta   = selisih.length ? Math.round(selisih.reduce((a,b)=>a+b,0) / selisih.length) : 0;
+  const naik       = DATA_REKAP.filter(r => r.status === 'Naik').length;
+
+  $('stats').innerHTML = `
+    <div class="stat">
+      <div class="label">Total Siswa</div>
+      <div class="value">${totalSiswa}</div>
+      <div class="sub">${preScores.length} pre · ${postScores.length} post</div>
+    </div>
+    <div class="stat">
+      <div class="label">Rata-rata Pre-Test</div>
+      <div class="value">${avgPre}</div>
+      <div class="sub">dari ${preScores.length} siswa</div>
+    </div>
+    <div class="stat">
+      <div class="label">Rata-rata Post-Test</div>
+      <div class="value green">${avgPost}</div>
+      <div class="sub">dari ${postScores.length} siswa</div>
+    </div>
+    <div class="stat">
+      <div class="label">Rata-rata Kenaikan</div>
+      <div class="value ${avgDelta > 0 ? 'green' : ''}">${avgDelta > 0 ? '+' : ''}${avgDelta}</div>
+      <div class="sub">${naik} siswa naik</div>
+    </div>
+  `;
+}
+
+/* ============================================================
+   RENDER TABEL
+   ============================================================ */
+function renderTable(){
+  if (currentTab === 'rekap') renderRekap();
+  else                        renderRaw();
+}
+
+function renderRekap(){
+  const q      = $('search').value.trim().toLowerCase();
+  const fKelas = $('filter-kelas').value;
+
+  let list = DATA_REKAP.slice();
+  if (q)      list = list.filter(r => r.nama.toLowerCase().includes(q));
+  if (fKelas) list = list.filter(r => r.kelas === fKelas);
+
+  list.sort((a,b) => {
+    let va = a[sortKey], vb = b[sortKey];
+    if (va === null || va === undefined) va = -999;
+    if (vb === null || vb === undefined) vb = -999;
+    if (typeof va === 'string') va = va.toLowerCase();
+    if (typeof vb === 'string') vb = vb.toLowerCase();
+    if (va < vb) return sortDir === 'asc' ? -1 : 1;
+    if (va > vb) return sortDir === 'asc' ?  1 : -1;
+    return 0;
+  });
+
+  if (!list.length){
+    $('table-container').innerHTML = '<div class="empty"><div class="ico">📭</div>Belum ada data siswa.</div>';
+    return;
+  }
+
+  const rows = list.map((r, i) => {
+    const pre  = r.pre  === null ? '—' : r.pre;
+    const post = r.post === null ? '—' : r.post;
+    const delta = r.selisih === null ? '—'
+      : (r.selisih > 0 ? '+' + r.selisih : (r.selisih < 0 ? r.selisih : '0'));
+
+    const preCls  = (r.pre  !== null && r.pre  >= 75) ? 'good' : (r.pre  !== null ? 'bad' : '');
+    const postCls = (r.post !== null && r.post >= 75) ? 'good' : (r.post !== null ? 'bad' : '');
+    const deltaCls = r.selisih === null ? '' : (r.selisih > 0 ? 'up' : (r.selisih < 0 ? 'down' : 'same'));
+
+    let badgeCls = 'badge-belum';
+    if (r.status === 'Naik')  badgeCls = 'badge-naik';
+    if (r.status === 'Turun') badgeCls = 'badge-turun';
+    if (r.status === 'Tetap') badgeCls = 'badge-tetap';
+
+    return `<tr>
+      <td>${i + 1}</td>
+      <td><strong>${esc(r.nama)}</strong></td>
+      <td>${esc(r.kelas)}</td>
+      <td><span class="score ${preCls}">${pre}</span></td>
+      <td><span class="score ${postCls}">${post}</span></td>
+      <td><span class="delta ${deltaCls}">${delta}</span></td>
+      <td><span class="badge ${badgeCls}">${r.status}</span></td>
+    </tr>`;
+  }).join('');
+
+  $('table-container').innerHTML = `
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th class="sortable" data-key="nama">Nama <span class="arrow">▲</span></th>
+            <th class="sortable" data-key="kelas">Kelas <span class="arrow">▲</span></th>
+            <th class="sortable" data-key="pre">Pre-Test <span class="arrow">▲</span></th>
+            <th class="sortable" data-key="post">Post-Test <span class="arrow">▲</span></th>
+            <th class="sortable" data-key="selisih">Δ <span class="arrow">▲</span></th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>`;
+
+  applySortIndicator();
+  bindSort();
+}
+
+function renderRaw(){
+  const q      = $('search').value.trim().toLowerCase();
+  const fKelas = $('filter-kelas').value;
+  const fJenis = $('filter-jenis').value;
+
+  let list = DATA_RAW.slice();
+  if (q)      list = list.filter(r => r.nama.toLowerCase().includes(q));
+  if (fKelas) list = list.filter(r => r.kelas === fKelas);
+  if (fJenis) list = list.filter(r => r.jenisTes === fJenis);
+
+  list.sort((a,b) => a.timestamp < b.timestamp ? 1 : -1);
+
+  if (!list.length){
+    $('table-container').innerHTML = '<div class="empty"><div class="ico">📭</div>Belum ada jawaban yang tercatat.</div>';
+    return;
+  }
+
+  const rows = list.map((r, i) => {
+    const badge = r.jenisTes === 'Post-Test' ? 'badge-post' : 'badge-pre';
+    const cls   = r.skor >= 75 ? 'good' : 'bad';
+    return `<tr>
+      <td>${i + 1}</td>
+      <td>${esc(r.timestamp)}</td>
+      <td><strong>${esc(r.nama)}</strong></td>
+      <td>${esc(r.kelas)}</td>
+      <td><span class="badge ${badge}">${esc(r.jenisTes)}</span></td>
+      <td><span class="score ${cls}">${r.skor}</span></td>
+      <td>${r.benar}</td>
+      <td>${r.salah}</td>
+    </tr>`;
+  }).join('');
+
+  $('table-container').innerHTML = `
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Waktu</th>
+            <th>Nama</th>
+            <th>Kelas</th>
+            <th>Jenis Tes</th>
+            <th>Skor</th>
+            <th>✓ Benar</th>
+            <th>✗ Salah</th>
+          </tr>
+        </thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>`;
+}
+
+/* ============================================================
+   SORTING
+   ============================================================ */
+function bindSort(){
+  document.querySelectorAll('th.sortable').forEach(th => {
+    th.addEventListener('click', () => {
+      const key = th.dataset.key;
+      if (sortKey === key) sortDir = sortDir === 'asc' ? 'desc' : 'asc';
+      else { sortKey = key; sortDir = 'asc'; }
+      renderRekap();
+    });
+  });
+}
+
+function applySortIndicator(){
+  document.querySelectorAll('th.sortable').forEach(th => {
+    th.classList.remove('sort-asc','sort-desc');
+    if (th.dataset.key === sortKey){
+      th.classList.add(sortDir === 'asc' ? 'sort-asc' : 'sort-desc');
+    }
+  });
+}
+
+/* ============================================================
+   TABS
+   ============================================================ */
+document.querySelectorAll('.tab').forEach(t => {
+  t.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+    t.classList.add('active');
+    currentTab = t.dataset.tab;
+    renderTable();
+  });
+});
+
+/* ============================================================
+   FILTER & SEARCH
+   ============================================================ */
+$('search').addEventListener('input', renderTable);
+$('filter-kelas').addEventListener('change', renderTable);
+$('filter-jenis').addEventListener('change', renderTable);
+
+/* ============================================================
+   REFRESH
+   ============================================================ */
+$('btn-refresh').addEventListener('click', () => {
+  $('btn-refresh').textContent = '⏳ Memuat...';
+  loadData().finally(() => {
+    setTimeout(() => { $('btn-refresh').textContent = '🔄 Refresh'; }, 300);
+  });
+});
+
+/* ============================================================
+   EXPORT CSV
+   ============================================================ */
+$('btn-csv').addEventListener('click', () => {
+  let csv = '';
+  const q      = $('search').value.trim().toLowerCase();
+  const fKelas = $('filter-kelas').value;
+  const fJenis = $('filter-jenis').value;
+
+  if (currentTab === 'rekap'){
+    csv = 'Nama,Kelas,Pre-Test,Post-Test,Selisih,Status\n';
+    let list = DATA_REKAP.slice();
+    if (q)      list = list.filter(r => r.nama.toLowerCase().includes(q));
+    if (fKelas) list = list.filter(r => r.kelas === fKelas);
+    list.forEach(r => {
+      csv += `"${r.nama}","${r.kelas}",${r.pre ?? ''},${r.post ?? ''},${r.selisih ?? ''},"${r.status}"\n`;
+    });
+  } else {
+    csv = 'Timestamp,Nama,Kelas,Jenis Tes,Skor,Benar,Salah\n';
+    let list = DATA_RAW.slice();
+    if (q)      list = list.filter(r => r.nama.toLowerCase().includes(q));
+    if (fKelas) list = list.filter(r => r.kelas === fKelas);
+    if (fJenis) list = list.filter(r => r.jenisTes === fJenis);
+    list.forEach(r => {
+      csv += `"${r.timestamp}","${r.nama}","${r.kelas}","${r.jenisTes}",${r.skor},${r.benar},${r.salah}\n`;
+    });
+  }
+
+  const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href = url;
+  a.download = `rekap-nilai-${currentTab}-${new Date().toISOString().slice(0,10)}.csv`;
+  a.click();
+  URL.revokeObjectURL(url);
+});
+</script>
+
+</body>
+</html>
